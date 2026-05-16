@@ -7,15 +7,30 @@ import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/axios';
 
+import { useEffect } from 'react';
+
 const formatIN = (num: number) => new Intl.NumberFormat('en-IN').format(num);
 
 export default function LoanConfigPage() {
   const router = useRouter();
-  const { loanConfig, setLoanConfig } = useApplyStore();
+  const { personalDetails, documents, loanConfig, setLoanConfig } = useApplyStore();
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    if (!personalDetails) {
+      router.replace('/apply/personal-details');
+    } else if (!documents) {
+      router.replace('/apply/upload-documents');
+    } else {
+      setChecking(false);
+    }
+  }, [personalDetails, documents, router]);
   
   const [loanAmount, setLoanAmount] = useState(loanConfig?.loanAmount || 100000);
   const [tenure, setTenure] = useState(loanConfig?.tenure || 90);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (checking) return <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-indigo-600" /></div>;
 
   // SI = (P × R × T) / (365 × 100)
   const calculateSI = (p: number, t: number) => {

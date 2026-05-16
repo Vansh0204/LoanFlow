@@ -173,6 +173,10 @@ export default function SignupPage() {
         </button>
       </form>
 
+      <p className="mt-4 text-center text-[10px] text-slate-400">
+        Executive accounts are pre-provisioned. Sign up creates a borrower account.
+      </p>
+
       <p className="mt-6 text-center text-sm text-slate-600">
         Already have an account?{' '}
         <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">

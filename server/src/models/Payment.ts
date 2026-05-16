@@ -26,7 +26,8 @@ const paymentSchema = new Schema<IPayment>(
     utrNumber: {
       type: String,
       required: true,
-      unique: true,
+      unique: true, // Unique across all payments globally
+      trim: true,
     },
     amount: {
       type: Number,

@@ -118,28 +118,49 @@ export default function LoginPage() {
         </Link>
       </p>
 
-      {/* Demo Credentials */}
+      {/* Demo Credentials Section */}
       <div className="mt-8 border-t border-slate-200 pt-6">
         <button
           onClick={() => setShowDemo(!showDemo)}
-          className="w-full text-left text-sm font-medium text-slate-600 hover:text-slate-900 flex justify-between items-center"
+          className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-colors mx-auto"
         >
-          <span>Demo credentials</span>
-          <span className="text-xs bg-slate-100 px-2 py-1 rounded">Click to expand</span>
+          View demo credentials {showDemo ? '▴' : '▾'}
         </button>
         
         {showDemo && (
-          <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-            {['admin', 'sales', 'sanction', 'disbursement', 'collection', 'borrower'].map((role) => (
-              <button
-                key={role}
-                onClick={() => handleDemoClick(`${role}@lms.com`)}
-                className="text-left px-3 py-2 border border-slate-200 rounded-md hover:border-indigo-300 hover:bg-indigo-50 transition-colors"
-              >
-                <div className="font-semibold text-slate-800 capitalize">{role}</div>
-                <div className="text-slate-500">{role}@lms.com</div>
-              </button>
-            ))}
+          <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+            <table className="w-full text-[10px] text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-100 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+                  <th className="px-3 py-2">Role</th>
+                  <th className="px-3 py-2">Email</th>
+                  <th className="px-3 py-2 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {[
+                  { role: 'Admin', email: 'admin@lms.com' },
+                  { role: 'Sales', email: 'sales@lms.com' },
+                  { role: 'Sanction', email: 'sanction@lms.com' },
+                  { role: 'Disbursement', email: 'disbursement@lms.com' },
+                  { role: 'Collection', email: 'collection@lms.com' },
+                  { role: 'Borrower', email: 'borrower@lms.com' },
+                ].map((item) => (
+                  <tr key={item.role} className="hover:bg-white transition-colors">
+                    <td className="px-3 py-2 font-bold text-slate-700">{item.role}</td>
+                    <td className="px-3 py-2 text-slate-500 font-mono">{item.email}</td>
+                    <td className="px-3 py-2 text-right">
+                      <button
+                        onClick={() => handleDemoClick(item.email)}
+                        className="text-indigo-600 hover:text-indigo-800 font-bold hover:underline"
+                      >
+                        Use
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

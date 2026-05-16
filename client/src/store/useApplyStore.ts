@@ -44,7 +44,7 @@ export const useApplyStore = create<ApplyState>()(
       reset: () => set({ personalDetails: null, documents: null, loanConfig: null }),
     }),
     {
-      name: 'lms-apply-storage',
+      name: 'lms-apply',
     }
   )
 );

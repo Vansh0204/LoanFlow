@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { UploadCloud, FileText, CheckCircle, Loader2, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -13,6 +13,17 @@ export default function UploadDocumentsPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [localFile, setLocalFile] = useState<File | null>(null);
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    if (!personalDetails) {
+      router.replace('/apply/personal-details');
+    } else {
+      setChecking(false);
+    }
+  }, [personalDetails, router]);
+
+  if (checking) return <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-indigo-600" /></div>;
 
   // If unemployed or self-employed, maybe they skip this step?
   // The requirement says "upload-salary-slip", so salaried usually needs it. 
