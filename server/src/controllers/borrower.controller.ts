@@ -99,25 +99,14 @@ export const applyLoan = async (req: AuthRequest, res: Response): Promise<void> 
       return;
     }
 
-    const P = Number(loanAmount);
-    const T = Number(tenure);
-    const R = 12; // 12% p.a. fixed interest rate
-    
-    // Simple Interest Calculation based on days
-    const SI = Math.round((P * R * T) / (365 * 100));
-    const totalRepayment = P + SI;
-
     const loanApplication = await LoanApplication.create({
-      borrowerId: new mongoose.Types.ObjectId(userId),
-      borrowerProfile: profile._id,
-      loanAmount: P,
-      tenure: T,
-      interestRate: R,
-      simpleInterest: SI,
-      totalRepayment,
-      outstandingBalance: totalRepayment,
+      borrowerId: new mongoose.Types.ObjectId(userId) as any,
+      borrowerProfile: profile._id as any,
+      loanAmount: Number(loanAmount),
+      tenure: Number(tenure),
+      interestRate: 12,
       status: 'applied',
-    } as any);
+    });
 
     res.status(201).json(loanApplication);
   } catch (error: any) {

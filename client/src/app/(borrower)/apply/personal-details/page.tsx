@@ -101,9 +101,11 @@ export default function PersonalDetailsPage() {
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">PAN Number</label>
             <input
-              {...register('pan', { 
-                onChange: (e) => e.target.value = e.target.value.toUpperCase() 
-              })}
+              {...register('pan')}
+              onChange={(e) => {
+                const upper = e.target.value.toUpperCase();
+                setValue('pan', upper, { shouldValidate: true });
+              }}
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none uppercase"
               placeholder="ABCDE1234F"
             />

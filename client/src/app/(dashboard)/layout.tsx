@@ -36,17 +36,25 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const filteredItems = SIDEBAR_ITEMS.filter(item => 
     user?.role && item.roles.includes(user.role)
   );
 
   const SidebarContent = () => (
-    <>
-      <div className="p-6 flex items-center gap-2 mb-4">
-        <Hexagon className="w-8 h-8 fill-indigo-600 text-indigo-600" />
-        <span className="text-xl font-bold tracking-tight">LoanFlow</span>
+    <div className="flex flex-col h-full bg-slate-900 text-white">
+      <div className="p-6 flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Hexagon className="w-8 h-8 fill-indigo-600 text-indigo-600" />
+          <span className="text-xl font-bold tracking-tight">LoanFlow</span>
+        </div>
+        <button 
+          onClick={() => setIsMobileOpen(false)}
+          className="md:hidden p-2 hover:bg-slate-800 rounded-lg text-slate-400"
+        >
+          <X className="w-6 h-6" />
+        </button>
       </div>
 
       <nav className="flex-1 px-4 space-y-1">
@@ -56,7 +64,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => setIsMobileOpen(false)}
               className={clsx(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 isActive 
@@ -89,33 +97,34 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           Logout
         </button>
       </div>
-    </>
+    </div>
   );
 
   return (
-    <div className="min-h-screen flex bg-slate-50">
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-[240px] bg-slate-900 text-white flex-col fixed h-full z-20">
+    <div className="min-h-screen flex bg-slate-50 relative overflow-x-hidden">
+      {/* Mobile Sidebar Overlay */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm md:hidden transition-opacity duration-300" 
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Desktop (Fixed) & Mobile (Slide-over) */}
+      <aside className={clsx(
+        "fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto md:flex",
+        isMobileOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
         <SidebarContent />
       </aside>
 
-      {/* Mobile Sidebar */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] lg:hidden">
-          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 w-[240px] bg-slate-900 text-white flex flex-col animate-in slide-in-from-left duration-300">
-            <SidebarContent />
-          </aside>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <main className="flex-1 lg:ml-[240px] flex flex-col min-h-screen">
-        <header className="h-16 bg-white border-b border-slate-200 px-4 lg:px-8 flex items-center justify-between sticky top-0 z-10">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center gap-4">
             <button 
-              onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
+              onClick={() => setIsMobileOpen(true)}
+              className="md:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -133,10 +142,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <div className="p-4 lg:p-8 flex-1">
+        <main className="p-4 md:p-8">
           {children}
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

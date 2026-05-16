@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
+import { formatINR } from '@/lib/format';
 
 interface Loan {
   _id: string;
@@ -35,7 +36,6 @@ interface Payment {
   paymentDate: string;
 }
 
-const formatIN = (num: number) => new Intl.NumberFormat('en-IN').format(num);
 
 export default function CollectionPage() {
   const [loans, setLoans] = useState<Loan[]>([]);
@@ -149,14 +149,14 @@ export default function CollectionPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col text-xs text-slate-500">
-                          <span>Principal: ₹{formatIN(loan.loanAmount)}</span>
-                          <span>Total: ₹{formatIN(loan.totalRepayment)}</span>
+                          <span>Principal: {formatINR(loan.loanAmount)}</span>
+                          <span>Total: {formatINR(loan.totalRepayment)}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="w-full space-y-2">
                           <div className="flex justify-between text-xs font-medium">
-                            <span className="text-emerald-600">₹{formatIN(loan.totalAmountPaid)} paid</span>
+                            <span className="text-emerald-600">{formatINR(loan.totalAmountPaid)} paid</span>
                             <span className="text-slate-400">{Math.round(progress)}%</span>
                           </div>
                           <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -168,7 +168,7 @@ export default function CollectionPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="font-bold text-slate-900">₹{formatIN(loan.outstandingBalance)}</span>
+                        <span className="font-bold text-slate-900">{formatINR(loan.outstandingBalance)}</span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         {isClosed ? (
@@ -270,7 +270,7 @@ export default function CollectionPage() {
                         onChange={(e) => setAmount(e.target.value)}
                         max={selectedLoan.outstandingBalance}
                       />
-                      <p className="mt-1.5 text-[10px] font-bold text-amber-600 uppercase">Max: ₹{formatIN(selectedLoan.outstandingBalance)}</p>
+                      <p className="mt-1.5 text-[10px] font-bold text-amber-600 uppercase">Max: {formatINR(selectedLoan.outstandingBalance)}</p>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-slate-700 mb-2">Payment Date</label>
@@ -321,7 +321,7 @@ export default function CollectionPage() {
                             <Plus className="w-5 h-5" />
                           </div>
                           <div>
-                            <p className="text-sm font-bold text-slate-900">₹{formatIN(p.amount)}</p>
+                            <p className="text-sm font-bold text-slate-900">{formatINR(p.amount)}</p>
                             <p className="text-[10px] text-slate-400 font-mono">{p.utrNumber}</p>
                           </div>
                         </div>

@@ -10,6 +10,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { formatINR } from '@/lib/format';
 
 interface Loan {
   _id: string;
@@ -22,7 +23,6 @@ interface Loan {
   };
 }
 
-const formatIN = (num: number) => new Intl.NumberFormat('en-IN').format(num);
 
 export default function DisbursementPage() {
   const [loans, setLoans] = useState<Loan[]>([]);
@@ -93,9 +93,9 @@ export default function DisbursementPage() {
                     <td className="px-6 py-4">
                       <span className="font-medium text-slate-900">{loan.borrowerProfile.fullName}</span>
                     </td>
-                    <td className="px-6 py-4 text-sm font-bold text-indigo-600">₹{formatIN(loan.loanAmount)}</td>
+                    <td className="px-6 py-4 text-sm font-bold text-indigo-600">{formatINR(loan.loanAmount)}</td>
                     <td className="px-6 py-4 text-sm text-slate-600">{loan.tenure} days</td>
-                    <td className="px-6 py-4 text-sm font-medium text-slate-900">₹{formatIN(loan.totalRepayment)}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-slate-900">{formatINR(loan.totalRepayment)}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 text-slate-600 text-sm">
                         <Calendar className="w-4 h-4 text-slate-400" />
@@ -137,7 +137,7 @@ export default function DisbursementPage() {
             </div>
             <h2 className="text-xl font-bold text-slate-900 mb-2">Confirm Disbursement</h2>
             <p className="text-slate-500 text-sm mb-6 leading-relaxed">
-              Are you sure you want to disburse <span className="font-bold text-indigo-600">₹{formatIN(disburseModal.loanAmount)}</span> to <span className="font-bold text-slate-900">{disburseModal.borrowerProfile.fullName}</span>?
+              Are you sure you want to disburse <span className="font-bold text-indigo-600">{formatINR(disburseModal.loanAmount)}</span> to <span className="font-bold text-slate-900">{disburseModal.borrowerProfile.fullName}</span>?
               This action will mark the loan as active and start the repayment cycle.
             </p>
             <div className="flex gap-3">

@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import { useEffect, useState } from 'react';
 import api from '@/lib/axios';
 import { 
@@ -259,4 +261,3 @@ export default function SanctionPage() {
   );
 }
 
-import React from 'react';
