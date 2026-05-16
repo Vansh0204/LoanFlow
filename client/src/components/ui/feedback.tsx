@@ -29,11 +29,13 @@ export function SkeletonTable({ rows = 5, cols = 5 }: { rows?: number; cols?: nu
 export function EmptyState({ 
   icon: Icon, 
   title, 
-  subtitle 
+  subtitle,
+  action
 }: { 
   icon: any; 
   title: string; 
   subtitle: string;
+  action?: ReactNode;
 }) {
   return (
     <div className="text-center py-20 bg-white border border-slate-200 rounded-xl">
@@ -42,6 +44,7 @@ export function EmptyState({
       </div>
       <h3 className="text-slate-900 font-semibold">{title}</h3>
       <p className="text-slate-500 text-sm mt-1">{subtitle}</p>
+      {action && <div className="mt-6">{action}</div>}
     </div>
   );
 }

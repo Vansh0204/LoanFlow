@@ -6,7 +6,7 @@ import { Loader2, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import clsx from 'clsx';
 import api from '@/lib/axios';
 
-const formatIN = (num: number) => new Intl.NumberFormat('en-IN').format(num);
+import { formatINR } from '@/lib/format';
 
 export default function StatusPage() {
   const [loan, setLoan] = useState<any>(null);
@@ -151,11 +151,11 @@ export default function StatusPage() {
             
             <div>
               <p className="text-sm text-slate-500 mb-1">Principal Amount</p>
-              <p className="font-medium text-slate-900 text-lg">₹{formatIN(loan.loanAmount)}</p>
+              <p className="font-medium text-slate-900 text-lg">{formatINR(loan.loanAmount)}</p>
             </div>
             <div>
               <p className="text-sm text-slate-500 mb-1">Total Repayment Amount</p>
-              <p className="font-medium text-indigo-600 text-lg">₹{formatIN(loan.totalRepayment)}</p>
+              <p className="font-medium text-indigo-600 text-lg">{formatINR(loan.totalRepayment)}</p>
             </div>
             
             <div>
@@ -172,11 +172,11 @@ export default function StatusPage() {
                 <div className="sm:col-span-2 my-2 border-t border-slate-100"></div>
                 <div>
                   <p className="text-sm text-slate-500 mb-1">Total Paid</p>
-                  <p className="font-medium text-emerald-600">₹{formatIN(loan.totalAmountPaid)}</p>
+                  <p className="font-medium text-emerald-600">{formatINR(loan.totalAmountPaid)}</p>
                 </div>
                 <div>
                   <p className="text-sm text-slate-500 mb-1">Outstanding Balance</p>
-                  <p className="font-medium text-amber-600">₹{formatIN(loan.outstandingBalance)}</p>
+                  <p className="font-medium text-amber-600">{formatINR(loan.outstandingBalance)}</p>
                 </div>
               </>
             )}

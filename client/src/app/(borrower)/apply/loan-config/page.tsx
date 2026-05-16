@@ -8,8 +8,8 @@ import toast from 'react-hot-toast';
 import api from '@/lib/axios';
 
 import { useEffect } from 'react';
+import { formatINR } from '@/lib/format';
 
-const formatIN = (num: number) => new Intl.NumberFormat('en-IN').format(num);
 
 export default function LoanConfigPage() {
   const router = useRouter();
@@ -66,7 +66,7 @@ export default function LoanConfigPage() {
         <div>
           <div className="flex justify-between items-end mb-3">
             <label className="block text-sm font-medium text-slate-700">Loan Amount</label>
-            <div className="text-2xl font-bold text-indigo-600">₹{formatIN(loanAmount)}</div>
+            <div className="text-2xl font-bold text-indigo-600">{formatINR(loanAmount)}</div>
           </div>
           <input
             type="range"
@@ -110,7 +110,7 @@ export default function LoanConfigPage() {
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
             <span className="text-slate-500">Loan Amount</span>
-            <span className="font-medium text-slate-900">₹{formatIN(loanAmount)}</span>
+            <span className="font-medium text-slate-900">{formatINR(loanAmount)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-500">Tenure</span>
@@ -122,11 +122,11 @@ export default function LoanConfigPage() {
           </div>
           <div className="flex justify-between">
             <span className="text-slate-500">Simple Interest</span>
-            <span className="font-medium text-amber-600">+ ₹{formatIN(si)}</span>
+            <span className="font-medium text-amber-600">+ {formatINR(si)}</span>
           </div>
           <div className="pt-3 border-t border-slate-200 flex justify-between items-center">
             <span className="font-semibold text-slate-900">Total Repayment</span>
-            <span className="text-xl font-bold text-indigo-600">₹{formatIN(totalRepayment)}</span>
+            <span className="text-xl font-bold text-indigo-600">{formatINR(totalRepayment)}</span>
           </div>
         </div>
       </div>
