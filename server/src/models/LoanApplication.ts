@@ -50,11 +50,11 @@ const loanApplicationSchema = new Schema<ILoanApplication>(
     },
     simpleInterest: {
       type: Number,
-      required: true,
+      default: 0,
     },
     totalRepayment: {
       type: Number,
-      required: true,
+      default: 0,
     },
     status: {
       type: String,
@@ -84,7 +84,7 @@ const loanApplicationSchema = new Schema<ILoanApplication>(
     },
     outstandingBalance: {
       type: Number,
-      required: true,
+      default: 0,
     },
   },
   {
