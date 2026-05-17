@@ -241,57 +241,67 @@ export default function CollectionPage() {
             </div>
 
             <div className="flex-1 overflow-y-auto">
-              {/* Form Section */}
-              <div className="p-8 border-b border-slate-100 bg-slate-50/50">
-                <form onSubmit={handleRecordPayment} className="space-y-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="col-span-2">
-                      <label className="block text-sm font-bold text-slate-700 mb-2">UTR Number / Ref</label>
-                      <div className="relative">
-                        <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              {/* Form Section - only for non-closed loans */}
+              {selectedLoan.status !== 'closed' ? (
+                <div className="p-8 border-b border-slate-100 bg-slate-50/50">
+                  <form onSubmit={handleRecordPayment} className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="col-span-2">
+                        <label className="block text-sm font-bold text-slate-700 mb-2">UTR Number / Ref</label>
+                        <div className="relative">
+                          <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                          <input
+                            required
+                            type="text"
+                            className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all text-slate-900 bg-white"
+                            placeholder="Unique transaction reference"
+                            value={utrNumber}
+                            onChange={(e) => setUtrNumber(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Amount (₹)</label>
                         <input
                           required
-                          type="text"
-                          className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all text-slate-900 bg-white"
-                          placeholder="Unique transaction reference"
-                          value={utrNumber}
-                          onChange={(e) => setUtrNumber(e.target.value)}
+                          type="number"
+                          className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all text-slate-900 bg-white font-bold"
+                          placeholder="0.00"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          max={selectedLoan.outstandingBalance}
+                        />
+                        <p className="mt-1.5 text-[10px] font-bold text-amber-600 uppercase">Max: {formatINR(selectedLoan.outstandingBalance)}</p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Payment Date</label>
+                        <input
+                          required
+                          type="date"
+                          className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all text-slate-900 bg-white"
+                          value={paymentDate}
+                          onChange={(e) => setPaymentDate(e.target.value)}
                         />
                       </div>
                     </div>
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Amount (₹)</label>
-                      <input
-                        required
-                        type="number"
-                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all text-slate-900 bg-white font-bold"
-                        placeholder="0.00"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        max={selectedLoan.outstandingBalance}
-                      />
-                      <p className="mt-1.5 text-[10px] font-bold text-amber-600 uppercase">Max: {formatINR(selectedLoan.outstandingBalance)}</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Payment Date</label>
-                      <input
-                        required
-                        type="date"
-                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all text-slate-900 bg-white"
-                        value={paymentDate}
-                        onChange={(e) => setPaymentDate(e.target.value)}
-                      />
-                    </div>
+                    <button 
+                      disabled={submitting}
+                      className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-indigo-600 transition-all shadow-lg flex items-center justify-center gap-2"
+                    >
+                      {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle className="w-5 h-5" />}
+                      Confirm Payment
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <div className="p-8 border-b border-slate-100 bg-emerald-50 flex flex-col items-center justify-center text-center gap-3 py-12">
+                  <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-7 h-7 text-emerald-600" />
                   </div>
-                  <button 
-                    disabled={submitting}
-                    className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-indigo-600 transition-all shadow-lg flex items-center justify-center gap-2"
-                  >
-                    {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle className="w-5 h-5" />}
-                    Confirm Payment
-                  </button>
-                </form>
-              </div>
+                  <h3 className="font-bold text-emerald-800 text-base">Loan Fully Repaid</h3>
+                  <p className="text-sm text-emerald-600">This loan has been closed. No further payments can be recorded.</p>
+                </div>
+              )}
 
               {/* History Section */}
               <div className="p-8 space-y-6">
