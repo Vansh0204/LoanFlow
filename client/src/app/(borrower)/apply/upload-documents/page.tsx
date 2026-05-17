@@ -23,13 +23,7 @@ export default function UploadDocumentsPage() {
     }
   }, [personalDetails, router]);
 
-  if (checking) return <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-indigo-600" /></div>;
-
-  // If unemployed or self-employed, maybe they skip this step?
-  // The requirement says "upload-salary-slip", so salaried usually needs it. 
-  // Let's assume we collect for everyone as requested.
-
-  const handleFile = async (file: File) => {
+  const handleFile = useCallback(async (file: File) => {
     if (!['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)) {
       toast.error('Invalid file type. Please upload a PDF, JPG, or PNG.');
       return;
@@ -49,7 +43,6 @@ export default function UploadDocumentsPage() {
       const { data } = await api.post('/borrower/upload-salary-slip', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      
       setDocuments({
         salarySlipUrl: data.fileUrl,
         salarySlipOriginalName: data.fileName,
@@ -61,17 +54,18 @@ export default function UploadDocumentsPage() {
     } finally {
       setIsUploading(false);
     }
-  };
+  }, [setDocuments]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFile(e.dataTransfer.files[0]);
     }
-  }, []);
+  }, [handleFile]);
+
+  if (checking) return <div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-indigo-600" /></div>;
 
   return (
     <div className="space-y-6">
