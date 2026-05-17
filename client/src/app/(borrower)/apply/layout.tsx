@@ -2,7 +2,8 @@
 
 import { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import { Check } from 'lucide-react';
+import Link from 'next/link';
+import { Check, LayoutDashboard } from 'lucide-react';
 import clsx from 'clsx';
 
 const STEPS = [
@@ -26,7 +27,14 @@ export default function ApplyLayout({ children }: { children: ReactNode }) {
             <span className="text-xl font-bold tracking-tight text-slate-900">LoanFlow</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-slate-500">Application Wizard</span>
+            <span className="hidden sm:block text-sm font-medium text-slate-500">Application Wizard</span>
+            <Link
+              href="/borrower"
+              className="flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-400 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-all"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Dashboard
+            </Link>
           </div>
         </div>
       </header>
