@@ -43,7 +43,7 @@ CLIENT_URL=http://localhost:3000
 cd ../client
 npm install
 ```
-Create a `.env.local` file in the `client` directory:
+Create a `.env.local` file in the `client` directory (see client/.env.example):
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
