@@ -32,6 +32,16 @@ async function seed() {
     await User.deleteMany({});
     console.log('Cleared existing users');
 
+    // Also clear all other collections for a clean reset
+    await mongoose.connection.db?.collection('borrowerprofiles').deleteMany({});
+    console.log('Cleared existing borrower profiles');
+
+    await mongoose.connection.db?.collection('loanapplications').deleteMany({});
+    console.log('Cleared existing loan applications');
+
+    await mongoose.connection.db?.collection('payments').deleteMany({});
+    console.log('Cleared existing payments');
+
     for (const u of seedUsers) {
       const hashedPassword = await bcrypt.hash(u.password, 10);
       await User.create({
